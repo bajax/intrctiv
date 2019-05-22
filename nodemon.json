@@ -1,0 +1,12 @@
+{
+	"watch" :
+	[
+		"lib/**/*.js",
+		"app/**/*.js",
+		"cli/**/*.js",
+		"client/**/*.[js|pug]"
+	],
+
+    "delay" : "100",
+    "exec"  : "node --inspect cli/serve"
+}

@@ -1,0 +1,7 @@
+node_modules/
+*.development.json
+*.production.json
+.eslintrc.json
+.nyc_output
+*.log
+*.test.json

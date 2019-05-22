@@ -1,0 +1,9 @@
+extends /layout
+
+block append js
+	script(src='/js/letters.js')
+
+block append body
+	p#status currently  
+		span#user-count 0
+		|   users 
