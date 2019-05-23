@@ -21,6 +21,7 @@
     "express": "^4.17.0",
     "jstransformer-markdown-it": "^2.1.0",
     "morgan": "^1.9.1",
+    "nconf": "^0.10.0",
     "node-sass-middleware": "^0.11.0",
     "pugify": "^2.2.0",
     "sass-module-importer": "^1.4.0",
