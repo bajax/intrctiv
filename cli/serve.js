@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+'use strict';
 const pJoin  = require('path').join;
 const config = require('nconf')
 	.argv()
