@@ -8,18 +8,20 @@ let myID;
 let magnets = Object.create(null);
 let initialOffset;
 let grabbedMag;
+let moveAcc;
 
 const mkMagnet = (magnetDef) =>
 {
 	let el = document.createElement('div');
 
-	el.innerText      = magnetDef.letter;
-	el.style.color    = `rgb(${magnetDef.color.map(cm=>Math.round(Math.min(cm*255, 255))).join(',')})`;
-	el.style.position = 'absolute';
-	el.style.left     = magnetDef.x + 'rem';
-	el.style.top      = magnetDef.y + 'rem';
-	el.className      = 'fridge-magnet';
-	el.onmousedown    = onMouseDown;
+	el.innerText        = magnetDef.letter;
+	el.style.color      = `rgb(${magnetDef.color.map(cm=>Math.round(Math.min(cm*255, 255))).join(',')})`;
+	el.style.position   = 'absolute';
+	el.style.left       = magnetDef.x + 'rem';
+	el.style.top        = magnetDef.y + 'rem';
+	el.style['z-index'] = magnetDef.zIndex;
+	el.className        = 'fridge-magnet';
+	el.onmousedown      = onMouseDown;
 
 	el.setAttribute('magnet-id', magnetDef.id);
 
@@ -27,11 +29,16 @@ const mkMagnet = (magnetDef) =>
 	document.getElementById('target').appendChild(el);
 };
 
-const mvMagnet = (id, newX, newY) =>
+const mvMagnet = (id, newX, newY, _moveAcc, me) =>
 {
-	let el        = magnets[id];
-	el.style.left = newX + 'rem';
-	el.style.top  = newY + 'rem';
+	moveAcc = _moveAcc;
+	if (myID === me)
+		return;
+
+	let el              = magnets[id];
+	el.style.left       = newX + 'rem';
+	el.style.top        = newY + 'rem';
+	el.style['z-index'] = moveAcc;
 };
 
 const userEnter = (_userCnt) =>
@@ -47,7 +54,7 @@ const userLeave = (_userCnt) =>
 	debug('user left');
 }
 
-const init = (magnets, userID, _userCnt, horizontal) =>
+const init = (magnets, userID, _userCnt, horizontal, _moveAcc) =>
 {
 	document.getElementById('target').innerText = '';
 	magnets.forEach(mkMagnet);
@@ -57,6 +64,8 @@ const init = (magnets, userID, _userCnt, horizontal) =>
 
 	if (horizontal)
 		document.getElementById('target').setAttribute('horizontal', true);
+
+	moveAcc = _moveAcc;
 };
 
 const onMouseDown = function (e) 
@@ -67,10 +76,12 @@ const onMouseDown = function (e)
 	let id = this.getAttribute('magnet-id');
 	debug(`started dragging ${id}`);
 
-	grabbedMag = this;
-	grabbedMag.onmouseup = onMouseUp;
+	grabbedMag            = this;
+	grabbedMag.onmouseup  = onMouseUp;
 	this.style.transition = 'none';
-	initialOffset = [e.offsetX, e.offsetY];
+	this.style['z-index'] = moveAcc+1;
+	initialOffset         = [e.offsetX, e.offsetY];
+
 	document.getElementById('target').onmousemove = onMouseMove;
 };
 

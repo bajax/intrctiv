@@ -56,6 +56,7 @@ module.exports = (socket) =>
 {
 	let magnets   = [];
 	let accum     = 0;
+	let moveAcc   = 0;
 	let rank      = 0;
 	let userCnt   = 0;
 	let maxUserID = 0;
@@ -85,6 +86,7 @@ module.exports = (socket) =>
 			];
 
 			magnet.id = ++accum;
+			magnet.zIndex = magnet.id;
 
 			if (HORIZONTAL)
 			{
@@ -99,6 +101,7 @@ module.exports = (socket) =>
 
 			magnets.push(magnet);
 		}
+		moveAcc = magnets.length;
 		rank++;
 	}
 	debug('done setting up letters, total', accum);
@@ -108,7 +111,7 @@ module.exports = (socket) =>
 		debug('user connected');
 		userCnt++;
 		//no need to keep track of individual presences (I think)
-		skt.emit('init', magnets, maxUserID++, userCnt, HORIZONTAL);
+		skt.emit('init', magnets, maxUserID++, userCnt, HORIZONTAL, moveAcc);
 
 		socket.emit('user-enter', userCnt);
 
@@ -121,8 +124,9 @@ module.exports = (socket) =>
 			let magnet = magnets[id-1];
 			magnet.x = newX;
 			magnet.y = newY;
+			magnet.zIndex = moveAcc++;
 
-			socket.emit('move', id, newX, newY, me);
+			socket.emit('move', id, newX, newY, moveAcc, me);
 		});
 
 		skt.on('disconnect', () =>
