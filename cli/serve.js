@@ -14,7 +14,7 @@ const server   = app.listen(config.listen);
 const Interact = require('../app');
 const debug    = require('debug')('intrctiv:serve');
 
-let interctv = Interact(server);
+let interctv = Interact(server, config);
 app.use(interctv);
 
 server.on('listening', () => 

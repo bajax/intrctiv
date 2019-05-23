@@ -1,3 +1,5 @@
 {
-	"listen" : "/var/run/intrctv.sock"
+	"env"        : "production",
+	"output_dir" : "/var/www/htdocs/",
+	"listen"     : "/var/run/intrctv.sock"
 }
