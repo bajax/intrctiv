@@ -12,7 +12,11 @@ const express  = require('express');
 const app      = express();
 if (!config.listen)
 	throw Error('no listen directive.  Is your conf good?');
-const server   = app.listen(config.listen);
+
+const server = Array.isArray(config.listen) ?
+	app.listen(...config.listen) :
+	app.listen(config.listen);
+
 const Interact = require('../app');
 const debug    = require('debug')('intrctiv:serve');
 
