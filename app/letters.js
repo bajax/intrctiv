@@ -154,6 +154,13 @@ module.exports = (socket) =>
 			magnet.zIndex = moveAcc++;
 
 			socket.emit('move', id, newX, newY, moveAcc, me);
+
+			if (moveAcc > 10000)
+			{
+				chopZIndices(magnets);
+				moveAcc = magnets.length;
+				socket.emit('init', magnets, undefined, userCnt, false, moveAcc);
+			}
 		});
 
 		skt.on('disconnect', () =>
@@ -162,12 +169,30 @@ module.exports = (socket) =>
 			userCnt--;
 			socket.emit('user-leave', userCnt);
 		});
+
+		skt.on('chop[', () =>
+		{
+			magnets = reSortZIndex(magnets, moveAcc);
+			moveAcc = magnets.length;
+			socket.emit('init', magnets, undefined, userCnt, false, moveAcc);
+
+		});
 	});
 
 	return (req, res, next) =>
 	{
 		req.ctx.title = 'The fridge!'
 		res.render('letters', req.ctx);
+
 	};
 };
 
+const chopZIndices = function (magnets)
+{
+	magnets.forEach((m, i) =>
+	{
+		m.zIndex -= moveAcc;
+	});
+
+	return magnets;
+};
