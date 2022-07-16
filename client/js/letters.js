@@ -88,6 +88,7 @@ const onTouchMove = function (e)
 	let po = document.getElementById('target').getBoundingClientRect();
 	
 	e.preventDefault();
+	e.stopPropagation();
 
 	return move(e.target, t.pageX-po.left, t.pageY-po.top);
 }
