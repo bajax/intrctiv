@@ -8,14 +8,14 @@ const SYMBOLS = [
                  '!', '?', '.'
                  ];
 
-const SETS               = 3;
-const SCRABBLE_DIST      = false;
+const SETS               = 2;
+const SCRABBLE_DIST      = true;
 const HORIZONTAL         = true;
 const GUTTER             = .5;
 const MARGIN             = .5;
 const CWIDTH             = 30;
 const CHEIGHT            = 40;
-const PER_RANK           = Math.ceil(SYMBOLS.length/5 * SETS);
+const PER_RANK           = Math.ceil(SYMBOLS.length/5 * SETS * 3);
 const WIDTH              = (CWIDTH - MARGIN * 2 - (PER_RANK - 1) * GUTTER)/PER_RANK;
 const HEIGHT             = 2;
 const MAXX               = CWIDTH-WIDTH;
@@ -90,14 +90,13 @@ module.exports = (socket) =>
 
 		let letterLBL = SYMBOLS[idx];
 
-		let destCnt = SCRABBLE_DIST ? COUNTS[letter] : 1;
+		let destCnt = SCRABBLE_DIST ? COUNTS[letterLBL] : 1;
 		for (let cnt = 0; cnt < destCnt; cnt++)
 		{
 			let rank = Math.floor(accum/PER_RANK);
 			let file = (accum%PER_RANK);
 
 			debug(letterLBL, rank, file);
-
 			let magnet    = Object.create(MAGNETPROTO);
 			magnet.letter = letterLBL;
 			let colorIDX;
