@@ -19,7 +19,7 @@
     "browserify-middleware": "^8.1.1",
     "debug": "^4.3.4",
     "express": "^4.18.1",
-    "jstransformer-markdown-it": "^2.1.0",
+    "jstransformer-markdown-it": "^3.0.0",
     "morgan": "^1.10.0",
     "nconf": "^0.12.0",
     "node-sass-middleware": "^1.0.1",
